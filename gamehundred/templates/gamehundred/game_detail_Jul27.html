@@ -1,0 +1,31 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Attain {{ game.goal }} with integers from 1 to {{ game.max_avail }}</h1>
+  {% if history %}
+  <table style="width:100%; border: 1px solid black; text-align: center;">
+	<thead><tr>
+		<th colspan="4" style="background-color:yellow; font-size: 1.2em;">Previous moves</th>
+	</tr></thead>
+	<tbody>
+		<tr style="background-color:gray;font-weight=800;color:white;">
+			<td style="text-align: center;">Before</td>
+			<td style="text-align: center;">Move</td>
+			<td style="text-align: center;">Who Made It</td>
+			<td style="text-align: center;">After</td>
+		</tr>
+		{% for number_before, move, moveholder, number_after in history %}
+			<tr>
+				<td style="text-align: center;">{{ number_before }}</td>
+				<td style="text-align: center;">{{ move }}</td>
+				<td style="text-align: center;">{{ moveholder }}</td>
+				<td style="text-align: center;">{{ number_after }}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+  </table>
+  {% endif %}
+  <div>I've just added {{ move }}</div>
+  <div>Current number is {{ number_cur }}</div>
+
+{% endblock %}

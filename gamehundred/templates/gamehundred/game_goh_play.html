@@ -1,0 +1,64 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h2 style="text-align: left;">Race to {{ game.goal }} with integers from 1 to {{ game.max_avail }}</h2>
+  {% if history %}
+  <table style="width:80%; border: 1px solid black; text-align: center;">
+	<thead><tr>
+		<th colspan="4" style="background-color:yellow; font-size: 1.2em;">Previous moves</th>
+	</tr></thead>
+	<tbody>
+		<tr style="background-color:gray;font-weight=800;color:white;">
+			<td style="text-align: center;">Before</td>
+			<td style="text-align: center;">Move</td>
+			<td style="text-align: center;">Who Made It</td>
+			<td style="text-align: center;">After</td>
+		</tr>
+		{% for number_before, move, moveholder, number_after in history %}
+			<tr style="font-size:80%;">
+				<td style="text-align: center;">{{ number_before }}</td>
+				<td style="text-align: center;">{{ move }}</td>
+				<td style="text-align: center;">{{ moveholder }}</td>
+				<td style="text-align: center;">{{ number_after }}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+  </table>
+  {% endif %}
+  {% if comp_move_last %}
+  	<div>I've just added {{ comp_move_last }}</div>
+  {% endif %}
+  <div>Current number is {{ number_cur }}</div>
+
+  {% if not is_end_of_game %}
+  <div>{% if is_out_of_range %}<span style="background-color:yellow; color:red;">Attention:</span><span> </span>{% endif %}Enter a number between {{ number_min_avail }} and {{ game.max_avail }} inclusively:</div>
+    <form action="" method="post">
+      {% csrf_token %}
+      <table>
+        <!--{{ form.move_cur }}
+	  {{ form.restart }}-->
+        <!--{{ form.as_table }}-->
+        {{ form.as_p }}
+      </table>
+      <input type="submit" value="Submit">
+    </form>
+  {% else %}
+    {% if is_oversum %}
+      <div><span style="background-color:yellow; font-weight:bold;">Draw:</span> you passed through 100 instead of reach 100. Thank you</div>
+    {% elif moveholder_last == 'computer' %}
+      <div><span style="background-color:yellow; font-weight:bold;">You lost</span></div>
+    {% else %}
+      <div><span style="background-color:yellow; font-weight:bold;">You won! Congratulations!</span></div>
+    {% endif %}
+    <div><span style="background-color:yellow; font-weight:bold;">Check the box to play again </span>
+      <form action="" method="post">
+        {% csrf_token %}
+        <table>
+	  {{ form.restart }}
+        </table>
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+  {% endif %}
+
+{% endblock %}

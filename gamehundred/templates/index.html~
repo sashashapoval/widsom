@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Game of One Hundred Home</h1>
+  <p>Welcome to our game page!</p>
+  <h2>Dynamic content</h2>
+  <p>You can play the following games:</p>
+  {% if game_list %}
+  <ul>
+    {% for game in game_list %}
+      <li>
+	<a href="{{ game.get_absolute_url }}">Attain {{ game.goal }} with integers from 1 to {{ game.max_avail }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no games to play.</p>
+  {% endif %}
+{% endblock %}

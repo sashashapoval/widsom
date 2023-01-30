@@ -1,0 +1,34 @@
+from django import forms
+
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+
+#class HumanMoveForm(forms.Form, number_init, max_avail):
+class HumanMoveForm(forms.Form):
+    #move_cur = forms.IntegerField(initial=number_init, help_text='Enter a number between {:d} and {:d} inclusively'.format(number_init+1, max_avail), label="Your Move", required=False)
+    move_cur = forms.IntegerField(label="Your Move", required=False)
+    restart = forms.BooleanField(help_text='Check to restart', initial=False, required=False)
+    #print(forms.initial)
+
+    def clean(self):
+        data = self.cleaned_data
+        print(data)
+
+        if data['move_cur'] == None and data['restart'] == False:
+            raise ValidationError(_('You must submit a move or check a restart box'))
+        #elif data['move_cur'] == None and data['restart'] == True:
+            #pass
+        #elif data['move_cur'] != None and data['move_cur'] < 1 or data['move_cur'] > 10:
+            #raise ValidationError(_('Invalid number: your move {:d} is not within range 1--10'.format(data['move_cur'])))
+        #else:
+            #pass
+        return data
+        
+
+class ChooseMoveStart(forms.Form):
+    WhoMoves = (
+            ('1', 'You'),
+            ('2', 'Computer'),
+            )
+    move_first = forms.ChoiceField(choices = WhoMoves, initial='1', label='Who moves first')
+

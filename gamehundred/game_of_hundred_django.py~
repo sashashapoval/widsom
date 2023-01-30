@@ -1,0 +1,15 @@
+
+def session_restart(list_names, vals, request):
+    out = []
+    for name in list_names:
+        tmp = request.session.get(name, [])
+        if tmp != []:
+            request.session[name] = []
+        out.append([])
+    for val in vals:
+        tmp = request.session.get(val, 0)
+        if tmp != 0:
+            request.session[val] = 0
+        out.append(0)
+
+
